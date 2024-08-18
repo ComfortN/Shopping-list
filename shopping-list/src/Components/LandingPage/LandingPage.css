@@ -1,0 +1,105 @@
+.landing-root {
+    height: 100vh;
+    background-color: #00897b;
+    padding: 0;
+    margin: 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+h6 {
+    color: yellowgreen;
+}
+
+h3 {
+    color: yellowgreen;
+    font-family: 'Edu VIC WA NT Beginner', cursive;
+}
+
+.flex-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+
+.textContainer {
+    flex: 2;
+    width: 90%;
+    padding: 16px;
+    background-color: rgba(30, 202, 179, 0.281);
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+
+}
+
+.imageContainer {
+    flex: 2;
+    border-top-left-radius: 200px;
+    border-bottom-left-radius: 200px;
+    overflow: hidden;
+}
+
+.image {
+    width: 100%;
+    height: 70vh;
+}
+
+.textContainer .signUpButton {
+    background-color: #1de9b6;
+    color: yellowgreen;
+    border-radius: 350px;
+    font-family: 'Edu VIC WA NT Beginner', cursive;
+    font-size: 1rem;
+    text-transform: none;
+    box-shadow: none;
+    border: none;
+    float: right;
+}
+
+.signUpButton:hover {
+    background-color: #64ffda;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+/* Responsive */
+@media (max-width: 768px) {
+    .flex-container {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1em;
+    }
+
+    .textContainer, .imageContainer {
+        width: 100%;
+        margin: 0;
+        border-radius: 5%;
+    }
+
+    .image {
+        height: 40vh;
+    }
+
+    .signUpButton {
+        width: 80%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .textContainer {
+        padding: 8px;
+        border-radius: 15px;
+    }
+
+    .signUpButton {
+        font-size: 0.9rem;
+    }
+}
