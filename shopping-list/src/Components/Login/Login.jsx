@@ -21,17 +21,24 @@ export default function Login() {
         }
 
         try {
-        const response = await axios.get('http://localhost:8888/users', {
-            username,
-            password,
-        });
-        
-            localStorage.setItem('token', response.data.token);
-            setSnackbarMessage('Login successful! Redirecting...');
-            setSnackbarOpen(true);
-            setTimeout(() => navigate('/'), 2000);
+            
+            const response = await axios.get('http://localhost:8888/users');
+            const users = response.data;
+
+            const user = users.find(user => user.username === username && user.password === password);
+
+            if (user) {
+                // Store user id in localStorage as token
+                localStorage.setItem('token', JSON.stringify({ id: user.id }));
+                setSnackbarMessage('Login successful! Redirecting...');
+                setSnackbarOpen(true);
+                setTimeout(() => navigate('/shopping-list'), 2000);
+            } else {
+                setSnackbarMessage('Invalid username or password');
+                setSnackbarOpen(true);
+            }
         } catch (error) {
-            setSnackbarMessage('Error logging in. Please check your credentials.');
+            setSnackbarMessage('Error logging in. Please try again.');
             setSnackbarOpen(true);
             console.error('Error logging in:', error);
         }

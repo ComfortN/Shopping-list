@@ -10,5 +10,15 @@
       "username": "check@gmail.com",
       "password": "phumzile"
     }
+  ],
+  "shoppingLists": [
+    {
+      "id": "b277",
+      "name": "flour",
+      "quantity": "1",
+      "notes": "1 kg",
+      "category": "Groceries",
+      "userId": "3a4d"
+    }
   ]
 }

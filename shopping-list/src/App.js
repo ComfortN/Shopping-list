@@ -5,6 +5,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Signup from './Components/Signup/Signup';
 import Login from './Components/Login/Login';
+import ShopingList from './Components/ShoppingList/ShopingList';
 import './App.css';
 
 
@@ -46,6 +47,7 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
+        <Route path='/shopping-list' element={<ShopingList/>} />
       </Routes>
     </Router>
     </ThemeProvider>
