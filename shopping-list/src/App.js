@@ -2,7 +2,10 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import LandingPage from './Components/LandingPage/LandingPage';
 import Navbar from './Components/Navbar/Navbar';
 import React from 'react';
-// import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Signup from './Components/Signup/Signup';
+import Login from './Components/Login/Login';
+import './App.css';
 
 
 const theme = createTheme({
@@ -11,6 +14,9 @@ const theme = createTheme({
       fontFamily: "'Edu VIC WA NT Beginner', cursive",
     },
     h6: {
+      fontFamily: "'Edu VIC WA NT Beginner', cursive",
+    },
+    h4: {
       fontFamily: "'Edu VIC WA NT Beginner', cursive",
     },
     h5: {
@@ -34,8 +40,14 @@ const theme = createTheme({
 function App() {
   return (
     <ThemeProvider theme={theme}>
+      <Router>
       <Navbar />
-      <LandingPage />
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
+      </Routes>
+    </Router>
     </ThemeProvider>
   );
 }

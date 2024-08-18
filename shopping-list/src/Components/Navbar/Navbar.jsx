@@ -10,7 +10,7 @@ export default function Navbar() {
           <Typography variant="h5" className="title">
             Shopping List App
           </Typography>
-          <Button color="inherit" className="loginButton">Login</Button>
+          <Button color="inherit" className="loginButton" href="/login">Login</Button>
         </Toolbar>
       </AppBar>
   )

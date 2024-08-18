@@ -1,0 +1,51 @@
+.container {
+    background-color: rgba(30, 202, 179, 0.281) !important;
+    padding: 16px !important;
+    border-radius: 25px !important;
+    width: 50% !important;
+    margin: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    
+}
+h4{
+    color: yellowgreen;
+}
+
+
+.container form {
+    width: 80%;
+}
+
+
+form .button {
+    margin-top: 16px;
+    color: yellowgreen;
+    width: 50%;
+    border-radius: 100px;
+    font-family: 'Edu VIC WA NT Beginner', cursive;
+    font-size: 1rem;
+    text-transform: none;
+    box-shadow: none;
+    border: none;
+    padding: 10px 20px;
+}
+
+
+@media (max-width: 480px) {
+    .container {
+        width: 95% !important;
+        padding: 8px !important;
+    }
+
+    h4 {
+        font-size: 1.5rem;
+    }
+
+    form .button {
+        font-size: 0.9rem;
+        padding: 8px 16px;
+    }
+}

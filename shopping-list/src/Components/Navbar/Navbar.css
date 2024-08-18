@@ -1,5 +1,6 @@
 .appBar {
     background-color: #00bfa5;
+    margin-bottom: 20px;
   }
 
 .MuiToolbar-root .loginButton {
