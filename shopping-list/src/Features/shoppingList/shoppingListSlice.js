@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { addItem, updateItem, deleteItem } from './shoppingListActions';
+import { fetchItems, addItem, updateItem, deleteItem } from './shoppingListActions';
 
 const shoppingListSlice = createSlice({
     name: 'shoppingList',
@@ -11,6 +11,18 @@ const shoppingListSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
+        // Fetch Items
+            .addCase(fetchItems.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(fetchItems.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.items = action.payload;
+            })
+            .addCase(fetchItems.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.error.message;
+            })
             .addCase(addItem.pending, (state) => {
                 state.loading = true;
                 state.error = null;

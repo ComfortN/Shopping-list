@@ -2,36 +2,42 @@ import React, { useEffect, useState } from 'react';
 import { Container, Typography, List, ListItem, ListItemText, ListItemIcon, IconButton, Snackbar } from '@mui/material';
 import {Delete, Edit} from '@mui/icons-material';
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
-import { deleteItem } from '../../Features/shoppingList/shoppingListActions';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteItem , fetchItems } from '../../Features/shoppingList/shoppingListActions';
 
 
 export default function GetItems({ onEdit }) {
-    const [items, setItems] = useState([]);
+    // const [items, setItems] = useState([]);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const dispatch = useDispatch();
+    const { items, loading, error } = useSelector((state) => state.shoppingList);
+    const user = useSelector((state) => state.user.user);
 
+
+    // const fetchItems = async () => {
+    //     try {
+    //         const response = await axios.get('http://localhost:8888/shoppingLists');
+    //         setItems(response.data);
+    //     } catch (error) {
+    //         setSnackbarMessage('Error fetching items.');
+    //         setSnackbarOpen(true);
+    //         console.error('Error fetching items:', error);
+    //     }
+    // };
 
     useEffect(() => {
-        fetchItems();
-    }, []);
-
-    const fetchItems = async () => {
-        try {
-            const response = await axios.get('http://localhost:8888/shoppingLists');
-            setItems(response.data);
-        } catch (error) {
-            setSnackbarMessage('Error fetching items.');
-            setSnackbarOpen(true);
-            console.error('Error fetching items:', error);
+        if (user) {
+            dispatch(fetchItems()); // Fetch specific user shopping lists
         }
-    };
+    }, [user, dispatch]);;
+
+    const userItems = items.filter(item => item.userId === user.id);
 
     const handleDelete = async (itemId) => {
         try {
             await dispatch(deleteItem(itemId));
-            setItems(items.filter(item => item.id !== itemId));
+            // setItems(items.filter(item => item.id !== itemId));
             setSnackbarMessage('Item deleted successfully.');
             setSnackbarOpen(true);
         } catch (error) {
@@ -45,7 +51,7 @@ export default function GetItems({ onEdit }) {
     const handleEdit = (item) => {
         if (onEdit) onEdit(item);
     };
-    
+
 
     const handleCloseSnackbar = () => {
         setSnackbarOpen(false);
@@ -58,7 +64,7 @@ export default function GetItems({ onEdit }) {
                 Shopping List
             </Typography>
             <List>
-                {items.map((item) => (
+                {userItems.map((item) => (
                     <ListItem key={item.id} divider>
                         <ListItemText
                             primary={item.name}

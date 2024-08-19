@@ -3,7 +3,7 @@ import { TextField, Button, Typography, Container, MenuItem, Select, InputLabel,
 import axios from 'axios';
 import './AddShoppingList.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { addItem, updateItem } from '../../Features/shoppingList/shoppingListActions';
+import { addItem, updateItem, fetchItems } from '../../Features/shoppingList/shoppingListActions';
 
 export default function AddShoppingList({ itemToEdit, onClose }) {
     const [name, setName] = useState('');
@@ -14,7 +14,8 @@ export default function AddShoppingList({ itemToEdit, onClose }) {
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarType, setSnackbarType] = useState('success');
     const dispatch = useDispatch();
-    const { status } = useSelector((state) => state.shoppingList);
+    // const { status } = useSelector((state) => state.shoppingList);
+    const user = useSelector((state) => state.user.user);
 
 
     useEffect(() => {
@@ -39,13 +40,13 @@ export default function AddShoppingList({ itemToEdit, onClose }) {
 
         // const userId = JSON.parse(localStorage.getItem('token')).id;
         const newItem = { name, quantity, notes, category };
-
+        const userId = user.id;
         try {
             if (itemToEdit) {
-                await dispatch(updateItem({ id: itemToEdit.id, name, quantity, notes, category }));
+                await dispatch(updateItem({ userId,itemId: itemToEdit.id, updatedItem: newItem }));
                 setSnackbarMessage('Item updated successfully!');
             } else {
-                await dispatch(addItem({ name, quantity, notes, category }));
+                await dispatch(addItem({ userId, item: newItem }));
                 setSnackbarMessage('Item added successfully!');
             }
             // setSnackbarMessage('Item added successfully!');
@@ -56,6 +57,8 @@ export default function AddShoppingList({ itemToEdit, onClose }) {
             setNotes('');
             setCategory('');
             onClose();
+            // if (onActionComplete) onActionComplete();
+            dispatch(fetchItems());
         } catch (error) {
             setSnackbarMessage('Error adding item. Please try again.');
             setSnackbarType('error');
