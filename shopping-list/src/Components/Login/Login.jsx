@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { TextField, Button, Typography, Container, Snackbar, Link } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginUser } from '../../Features/Users/userActions';
 
 export default function Login() {
     const [username, setUsername] = useState('');
@@ -9,6 +11,10 @@ export default function Login() {
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const userState = useSelector((state) => state.user);
+    const { status, error } = userState || {};
+
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -20,27 +26,15 @@ export default function Login() {
             return;
         }
 
-        try {
-            
-            const response = await axios.get('http://localhost:8888/users');
-            const users = response.data;
+        const resultAction = await dispatch(loginUser({ username, password }));
 
-            const user = users.find(user => user.username === username && user.password === password);
-
-            if (user) {
-                // Store user id in localStorage as token
-                localStorage.setItem('token', JSON.stringify({ id: user.id }));
-                setSnackbarMessage('Login successful! Redirecting...');
-                setSnackbarOpen(true);
-                setTimeout(() => navigate('/shopping-list'), 2000);
-            } else {
-                setSnackbarMessage('Invalid username or password');
-                setSnackbarOpen(true);
-            }
-        } catch (error) {
-            setSnackbarMessage('Error logging in. Please try again.');
+        if (loginUser.fulfilled.match(resultAction)) {
+            setSnackbarMessage('Login successful! Redirecting...');
             setSnackbarOpen(true);
-            console.error('Error logging in:', error);
+            setTimeout(() => navigate('/shopping-list'), 2000);
+        } else if (loginUser.rejected.match(resultAction)) {
+            setSnackbarMessage(resultAction.payload || 'Error logging in. Please try again.');
+            setSnackbarOpen(true);
         }
     };
 
@@ -67,7 +61,7 @@ export default function Login() {
                 onChange={(e) => setPassword(e.target.value)}
                 />
                 <Button type="submit" variant="contained" color="primary" className='button'>
-                Login
+                {status === 'loading' ? 'Logging in...' : 'Login'}
                 </Button>
             </form>
 

@@ -85,7 +85,7 @@ export default function AddShoppingList({ onAdd }) {
                         <MenuItem value="Electronics">Electronics</MenuItem>
                         <MenuItem value="Clothing">Clothing</MenuItem>
                         <MenuItem value="Household">Household</MenuItem>
-                        {/* Add more categories as needed */}
+                        
                     </Select>
                 </FormControl>
                 <TextField

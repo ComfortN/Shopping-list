@@ -3,6 +3,8 @@ import './Signup.css'
 import { TextField, Button, Typography, Container, Snackbar, Link  } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { signupUser } from '../../Features/Users/userActions';
 
 export default function Signup() {
     const [username, setUsername] = useState('');
@@ -11,6 +13,9 @@ export default function Signup() {
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const userState = useSelector((state) => state.user);
+    const { status, error } = userState || {};
 
     const handleSignup = async (e) => {
         e.preventDefault();
@@ -27,23 +32,18 @@ export default function Signup() {
             return;
         }
 
-        try {
-            const response = await axios.post('http://localhost:8888/users', {
-                username,
-                password,
-        });
+        const resultAction = await dispatch(signupUser({ username, password }));
 
-        localStorage.setItem('token', JSON.stringify({ id: response.data.id }));
-
+        if (signupUser.fulfilled.match(resultAction)) {
             setSnackbarMessage('Signup successful! Redirecting to login...');
             setSnackbarOpen(true);
             setTimeout(() => navigate('/login'), 2000);
-        } catch (error) {
-            setSnackbarMessage('Error signing up. Please try again.');
+        } else if (signupUser.rejected.match(resultAction)) {
+            setSnackbarMessage(resultAction.payload || 'Error signing up. Please try again.');
             setSnackbarOpen(true);
-            console.error('Error signing up:', error);
         }
     };
+
 
     const handleCloseSnackbar = () => {
         setSnackbarOpen(false);
@@ -75,7 +75,7 @@ export default function Signup() {
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 />
                 <Button type="submit" variant="contained" color="primary" className='button'>
-                Signup
+                {status === 'loading' ? 'Signing up...' : 'Signup'}
                 </Button>
             </form>
 
