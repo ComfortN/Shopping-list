@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Typography, List, ListItem, ListItemText, ListItemIcon, IconButton, Snackbar } from '@mui/material';
-import {Delete} from '@mui/icons-material';
+import {Delete, Edit} from '@mui/icons-material';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { deleteItem } from '../../Features/shoppingList/shoppingListActions';
 
-export default function GetItems() {
+
+export default function GetItems({ onEdit }) {
     const [items, setItems] = useState([]);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
+    const dispatch = useDispatch();
 
 
     useEffect(() => {
@@ -26,7 +30,7 @@ export default function GetItems() {
 
     const handleDelete = async (itemId) => {
         try {
-            await axios.delete(`http://localhost:8888/shoppingLists/${itemId}`);
+            await dispatch(deleteItem(itemId));
             setItems(items.filter(item => item.id !== itemId));
             setSnackbarMessage('Item deleted successfully.');
             setSnackbarOpen(true);
@@ -36,6 +40,12 @@ export default function GetItems() {
             console.error('Error deleting item:', error);
         }
     };
+
+
+    const handleEdit = (item) => {
+        if (onEdit) onEdit(item);
+    };
+    
 
     const handleCloseSnackbar = () => {
         setSnackbarOpen(false);
@@ -55,6 +65,10 @@ export default function GetItems() {
                             secondary={`Quantity: ${item.quantity} | Category: ${item.category} | Notes: ${item.notes}`}
                         />
                         <ListItemIcon>
+                            <IconButton edge="end" aria-label="edit" onClick={() => handleEdit(item)}>
+                                <Edit />
+                            </IconButton>
+
                             <IconButton edge="end" aria-label="delete" onClick={() => handleDelete(item.id)}>
                                 <Delete />
                             </IconButton>

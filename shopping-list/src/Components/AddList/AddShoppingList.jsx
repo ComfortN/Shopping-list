@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TextField, Button, Typography, Container, MenuItem, Select, InputLabel, FormControl, Snackbar } from '@mui/material';
 import axios from 'axios';
 import './AddShoppingList.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { addItem, updateItem } from '../../Features/shoppingList/shoppingListActions';
 
-export default function AddShoppingList({ onAdd }) {
+export default function AddShoppingList({ itemToEdit, onClose }) {
     const [name, setName] = useState('');
     const [quantity, setQuantity] = useState('');
     const [notes, setNotes] = useState('');
@@ -11,6 +13,18 @@ export default function AddShoppingList({ onAdd }) {
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarType, setSnackbarType] = useState('success');
+    const dispatch = useDispatch();
+    const { status } = useSelector((state) => state.shoppingList);
+
+
+    useEffect(() => {
+        if (itemToEdit) {
+            setName(itemToEdit.name);
+            setQuantity(itemToEdit.quantity);
+            setNotes(itemToEdit.notes);
+            setCategory(itemToEdit.category);
+        }
+    }, [itemToEdit]);
 
 
     const handleAddItem = async (e) => {
@@ -23,23 +37,25 @@ export default function AddShoppingList({ onAdd }) {
             return;
         }
 
-        const userId = JSON.parse(localStorage.getItem('token')).id;
+        // const userId = JSON.parse(localStorage.getItem('token')).id;
+        const newItem = { name, quantity, notes, category };
 
         try {
-            await axios.post('http://localhost:8888/shoppingLists', {
-                name,
-                quantity,
-                notes,
-                category,
-                userId,
-            });
-            setSnackbarMessage('Item added successfully!');
+            if (itemToEdit) {
+                await dispatch(updateItem({ id: itemToEdit.id, name, quantity, notes, category }));
+                setSnackbarMessage('Item updated successfully!');
+            } else {
+                await dispatch(addItem({ name, quantity, notes, category }));
+                setSnackbarMessage('Item added successfully!');
+            }
+            // setSnackbarMessage('Item added successfully!');
             setSnackbarType('success');
             setSnackbarOpen(true);
             setName('');
             setQuantity('');
             setNotes('');
             setCategory('');
+            onClose();
         } catch (error) {
             setSnackbarMessage('Error adding item. Please try again.');
             setSnackbarType('error');
@@ -57,21 +73,15 @@ export default function AddShoppingList({ onAdd }) {
   return (
     <Container className="container">
             <Typography variant="h4" gutterBottom>
-                Add Shopping List Item
+                {itemToEdit ? 'Edit Shopping List Item' : 'Add Shopping List Item'}
             </Typography>
             <form onSubmit={handleAddItem}>
                 <TextField
-                    label="Item Name"
-                    fullWidth
-                    margin="normal"
-                    value={name}
+                    label="Item Name" fullWidth margin="normal" value={name}
                     onChange={(e) => setName(e.target.value)}
                 />
                 <TextField
-                    label="Quantity"
-                    fullWidth
-                    margin="normal"
-                    value={quantity}
+                    label="Quantity" fullWidth margin="normal" value={quantity}
                     onChange={(e) => setQuantity(e.target.value)}
                 />
                 <FormControl fullWidth margin="normal">
@@ -96,7 +106,7 @@ export default function AddShoppingList({ onAdd }) {
                     onChange={(e) => setNotes(e.target.value)}
                 />
                 <Button type="submit" variant="contained" color="primary">
-                    Add Item
+                {itemToEdit ? 'Update Item' : 'Add Item'}
                 </Button>
             </form>
             

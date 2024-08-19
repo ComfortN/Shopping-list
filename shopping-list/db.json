@@ -18,12 +18,25 @@
   ],
   "shoppingLists": [
     {
-      "id": "b277",
       "name": "flour",
       "quantity": "1",
-      "notes": "1 kg",
+      "notes": "2 kg",
       "category": "Groceries",
-      "userId": "3a4d"
+      "id": "b277"
+    },
+    {
+      "id": "f57f",
+      "name": "sugar",
+      "quantity": "1",
+      "notes": "1 kg",
+      "category": "Groceries"
+    },
+    {
+      "name": "Milk",
+      "quantity": "3",
+      "notes": "1L",
+      "category": "Groceries",
+      "id": "fc78"
     }
   ]
 }
