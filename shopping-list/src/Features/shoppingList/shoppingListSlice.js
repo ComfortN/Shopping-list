@@ -5,10 +5,15 @@ const shoppingListSlice = createSlice({
     name: 'shoppingList',
     initialState: {
         items: [],
+        searchQuery: '',
         loading: false,
         error: null,
     },
-    reducers: {},
+    reducers: {
+        setSearchQuery: (state, action) => {
+            state.searchQuery = action.payload;
+        }
+    },
     extraReducers: (builder) => {
         builder
         // Fetch Items
@@ -65,4 +70,5 @@ const shoppingListSlice = createSlice({
     },
 });
 
+export const {setSearchQuery } = shoppingListSlice.actions;
 export default shoppingListSlice.reducer;

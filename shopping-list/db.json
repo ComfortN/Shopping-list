@@ -52,6 +52,14 @@
       "category": "Clothing",
       "userId": "3a4d",
       "id": "530f"
+    },
+    {
+      "id": "71f9",
+      "name": "sugar",
+      "quantity": "1",
+      "notes": "2kg",
+      "category": "Groceries",
+      "userId": "3a4d"
     }
   ]
 }

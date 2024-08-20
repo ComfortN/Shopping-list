@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { loginUser, signupUser } from './userActions';
+import { loginUser, signupUser, updateUser, fetchUserDetails } from './userActions';
 
 const userSlice = createSlice({
     name: 'user',
@@ -41,6 +41,30 @@ const userSlice = createSlice({
                 localStorage.setItem('token', JSON.stringify({ id: action.payload.id }));
             })
             .addCase(signupUser.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+            .addCase(fetchUserDetails.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchUserDetails.fulfilled, (state, action) => {
+                state.loading = false;
+                state.user = action.payload;
+            })
+            .addCase(fetchUserDetails.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+            .addCase(updateUser.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(updateUser.fulfilled, (state, action) => {
+                state.loading = false;
+                state.user = action.payload; // Update user state with the new data
+            })
+            .addCase(updateUser.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             });

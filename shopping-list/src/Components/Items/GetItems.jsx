@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Typography, List, ListItem, ListItemText, ListItemIcon, IconButton, Snackbar } from '@mui/material';
+import { Container, Typography, List, ListItem, ListItemText, ListItemIcon, IconButton, Snackbar, TextField } from '@mui/material';
 import {Delete, Edit} from '@mui/icons-material';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,6 +10,7 @@ export default function GetItems({ onEdit }) {
     // const [items, setItems] = useState([]);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
+    const [searchQuery, setSearchQuery] = useState('');
     const dispatch = useDispatch();
     const { items, loading, error } = useSelector((state) => state.shoppingList);
     const user = useSelector((state) => state.user.user);
@@ -30,9 +31,15 @@ export default function GetItems({ onEdit }) {
         if (user) {
             dispatch(fetchItems()); // Fetch specific user shopping lists
         }
-    }, [user, dispatch]);;
+    }, [user, dispatch]);
 
     const userItems = items.filter(item => item.userId === user.id);
+
+
+    // Filter items based on the search query
+    const filteredItems = userItems.filter(item =>
+        item.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
     const handleDelete = async (itemId) => {
         try {
@@ -53,6 +60,11 @@ export default function GetItems({ onEdit }) {
     };
 
 
+    const handleSearchChange = (event) => {
+        setSearchQuery(event.target.value); // Update search query
+    };
+
+
     const handleCloseSnackbar = () => {
         setSnackbarOpen(false);
     };
@@ -63,8 +75,17 @@ export default function GetItems({ onEdit }) {
             <Typography variant="h3" gutterBottom>
                 Shopping List
             </Typography>
+
+            <TextField
+                label="Search items"
+                fullWidth
+                margin="normal"
+                value={searchQuery}
+                onChange={handleSearchChange}
+            />
+
             <List>
-                {userItems.map((item) => (
+                {filteredItems.map((item) => (
                     <ListItem key={item.id} divider>
                         <ListItemText
                             primary={item.name}

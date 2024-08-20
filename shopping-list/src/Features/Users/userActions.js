@@ -1,6 +1,22 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+
+
+// Defining a thunk for fetching user details
+export const fetchUserDetails = createAsyncThunk(
+    'user/fetchUserDetails',
+    async (userId, { rejectWithValue }) => {
+        try {
+            const response = await axios.get(`http://localhost:8888/users/${userId}`);
+            return response.data;
+        } catch (error) {
+            return rejectWithValue('Error fetching user details. Please try again.');
+        }
+    }
+);
+
+
 // Defining a thunk for logging in the user
 export const loginUser = createAsyncThunk(
     'user/loginUser',
@@ -37,6 +53,19 @@ export const signupUser = createAsyncThunk(
             return { id: response.data.id, username: response.data.username };
         } catch (error) {
             return thunkAPI.rejectWithValue('Error signing up. Please try again.');
+        }
+    }
+);
+
+
+export const updateUser = createAsyncThunk(
+    'user/updateUser',
+    async (userData, { rejectWithValue }) => {
+        try {
+            const response = await axios.put('http://localhost:8888/users', userData); // Adjust the endpoint as necessary
+            return response.data;
+        } catch (error) {
+            return rejectWithValue(error.response.data);
         }
     }
 );
