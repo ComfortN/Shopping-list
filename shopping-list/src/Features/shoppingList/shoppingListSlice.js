@@ -6,13 +6,21 @@ const shoppingListSlice = createSlice({
     initialState: {
         items: [],
         searchQuery: '',
+        sortCriteria: '',
+        filterCategory: '',
         loading: false,
         error: null,
     },
     reducers: {
         setSearchQuery: (state, action) => {
             state.searchQuery = action.payload;
-        }
+        },
+        setSortCriteria: (state, action) => {
+            state.sortCriteria = action.payload;
+        },
+        setFilterCategory: (state, action) => {
+            state.filterCategory = action.payload;
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -70,5 +78,5 @@ const shoppingListSlice = createSlice({
     },
 });
 
-export const {setSearchQuery } = shoppingListSlice.actions;
+export const {setSearchQuery, setSortCriteria, setFilterCategory } = shoppingListSlice.actions;
 export default shoppingListSlice.reducer;

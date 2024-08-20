@@ -3,6 +3,7 @@ import AddShoppingList from '../AddList/AddShoppingList'
 import GetItems from '../Items/GetItems'
 import {Fab, Container } from '@mui/material';
 import {Add as AddIcon } from '@mui/icons-material';
+import SortFilter from '../SortFilter/SortFilter';
 
 export default function ShopingList() {
   const [itemToEdit, setItemToEdit] = useState(null);
@@ -33,7 +34,7 @@ const handleFormClose = () => {
 
     <Container>
       
-
+      <SortFilter />
       {showForm && (
         <AddShoppingList itemToEdit={itemToEdit} onClose={handleFormClose} />
       )}

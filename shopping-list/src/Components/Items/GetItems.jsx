@@ -10,9 +10,9 @@ export default function GetItems({ onEdit }) {
     // const [items, setItems] = useState([]);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
-    const [searchQuery, setSearchQuery] = useState('');
+    // const [searchQuery, setSearchQuery] = useState('');
     const dispatch = useDispatch();
-    const { items, loading, error } = useSelector((state) => state.shoppingList);
+    const { items, loading, error, searchQuery, sortCriteria, filterCategory } = useSelector((state) => state.shoppingList);
     const user = useSelector((state) => state.user.user);
 
 
@@ -36,10 +36,18 @@ export default function GetItems({ onEdit }) {
     const userItems = items.filter(item => item.userId === user.id);
 
 
-    // Filter items based on the search query
-    const filteredItems = userItems.filter(item =>
-        item.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    // Filter items based on the search query, sorting and filtering
+    const filteredItems = userItems
+        .filter(item => item.name.toLowerCase().includes(searchQuery.toLowerCase()))
+        .filter(item => (filterCategory ? item.category === filterCategory : true))
+        .sort((a, b) => {
+            if (sortCriteria === 'nameAsc') return a.name.localeCompare(b.name);
+            if (sortCriteria === 'nameDesc') return b.name.localeCompare(a.name);
+            if (sortCriteria === 'categoryAsc') return a.category.localeCompare(b.category);
+            if (sortCriteria === 'categoryDesc') return b.category.localeCompare(a.category);
+            return 0;
+        });
+
 
     const handleDelete = async (itemId) => {
         try {
@@ -60,9 +68,9 @@ export default function GetItems({ onEdit }) {
     };
 
 
-    const handleSearchChange = (event) => {
-        setSearchQuery(event.target.value); // Update search query
-    };
+    // const handleSearchChange = (event) => {
+    //     setSearchQuery(event.target.value); // Update search query
+    // };
 
 
     const handleCloseSnackbar = () => {
@@ -76,13 +84,14 @@ export default function GetItems({ onEdit }) {
                 Shopping List
             </Typography>
 
-            <TextField
+            {/* <TextField
                 label="Search items"
                 fullWidth
                 margin="normal"
                 value={searchQuery}
                 onChange={handleSearchChange}
-            />
+            /> */}
+            
 
             <List>
                 {filteredItems.map((item) => (
