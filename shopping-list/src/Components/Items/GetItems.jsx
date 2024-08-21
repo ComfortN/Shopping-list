@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Typography, List, ListItem, ListItemText, ListItemIcon, IconButton, Snackbar, TextField } from '@mui/material';
+import { Container, Typography, List, ListItem, ListItemText, ListItemIcon, IconButton, Snackbar, TextField, Box } from '@mui/material';
 import {Delete, Edit, Share} from '@mui/icons-material';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteItem , fetchItems } from '../../Features/shoppingList/shoppingListActions';
+import './GetItems.css'
 
 
 export default function GetItems({ onEdit }) {
@@ -27,13 +28,18 @@ export default function GetItems({ onEdit }) {
     //     }
     // };
 
+
+    // Effect to fetch the shopping list items for the logged-in user
     useEffect(() => {
         if (user) {
             dispatch(fetchItems()); // Fetch specific user shopping lists
-            console.log('User:', user);
-            console.log('Items:', items);
+            
         }
-    }, [user, dispatch, user, items]);
+    }, [user, dispatch]);
+
+
+    console.log('User:', user);
+    console.log('Items:', items);
 
     const userItems = items.filter(item => item.userId === user.id);
 
@@ -52,6 +58,18 @@ export default function GetItems({ onEdit }) {
         });
 
 
+    // Group items by category
+    const itemsByCategory = filteredItems.reduce((acc, item) => {
+        const category = item.category || 'Uncategorized';
+        if (!acc[category]) {
+            acc[category] = [];
+        }
+        acc[category].push(item);
+        return acc;
+    }, {})
+
+
+    // Handle the deletion of an item
     const handleDelete = async (itemId) => {
         try {
             await dispatch(deleteItem(itemId));
@@ -66,11 +84,13 @@ export default function GetItems({ onEdit }) {
     };
 
 
+    // Handle the editing of an item
     const handleEdit = (item) => {
         if (onEdit) onEdit(item);
     };
 
 
+    // Handle sharing an item using the Web Share API
     const handleNativeShare = (item) => {
         if (navigator.share) {
             navigator.share({
@@ -111,31 +131,34 @@ export default function GetItems({ onEdit }) {
                 onChange={handleSearchChange}
             /> */}
             
+            {Object.keys(itemsByCategory).map((category) => (
+                <Box key={category} className="category-box" my={4} p={2}>
+                    <Typography variant="h5" className="category-title">{category}</Typography>
+                    <List>
+                        {itemsByCategory[category].map((item) => (
+                            <ListItem key={item.id} divider>
+                                <ListItemText
+                                    primary={item.name}
+                                    secondary={`Quantity: ${item.quantity} | Category: ${item.category} | Notes: ${item.notes}`}
+                                />
+                                <ListItemIcon>
+                                    <IconButton edge="end" aria-label="edit" onClick={() => handleEdit(item)}>
+                                        <Edit />
+                                    </IconButton>
 
-            <List>
-                {filteredItems.map((item) => (
-                    <ListItem key={item.id} divider>
-                        <ListItemText
-                            primary={item.name}
-                            secondary={`Quantity: ${item.quantity} | Category: ${item.category} | Notes: ${item.notes}`}
-                        />
-                        <ListItemIcon>
-                            <IconButton edge="end" aria-label="edit" onClick={() => handleEdit(item)}>
-                                <Edit />
-                            </IconButton>
+                                    <IconButton edge="end" aria-label="delete" onClick={() => handleDelete(item.id)}>
+                                        <Delete />
+                                    </IconButton>
 
-                            <IconButton edge="end" aria-label="delete" onClick={() => handleDelete(item.id)}>
-                                <Delete />
-                            </IconButton>
-
-                            <IconButton edge="end" aria-label="share" onClick={() => handleNativeShare(item)}>
-                                <Share />
-                            </IconButton>
-                        </ListItemIcon>
-                    </ListItem>
-                ))}
-            </List>
-
+                                    <IconButton edge="end" aria-label="share" onClick={() => handleNativeShare(item)}>
+                                        <Share />
+                                    </IconButton>
+                                </ListItemIcon>
+                            </ListItem>
+                        ))}
+                    </List>
+            </Box>
+            ))}
             <Snackbar
                 open={snackbarOpen}
                 autoHideDuration={6000}
