@@ -1,11 +1,13 @@
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import LandingPage from './Components/LandingPage/LandingPage';
 import Navbar from './Components/Navbar/Navbar';
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, {useEffect} from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Signup from './Components/Signup/Signup';
 import Login from './Components/Login/Login';
 import ShopingList from './Components/ShoppingList/ShopingList';
+import { useDispatch, useSelector } from 'react-redux';
+import { setUser } from './Features/Users/userSlice';
 import './App.css';
 
 
@@ -39,6 +41,15 @@ const theme = createTheme({
 
 
 function App() {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.user);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      dispatch(setUser(JSON.parse(token)));
+    }
+  }, [dispatch]);
   return (
     <ThemeProvider theme={theme}>
       <Router>
@@ -47,7 +58,7 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
-        <Route path='/shopping-list' element={<ShopingList/>} />
+        <Route path='/shopping-list' element={user ? <ShopingList/> : <Navigate to='/' />} />
       </Routes>
     </Router>
     </ThemeProvider>

@@ -4,11 +4,15 @@ import { loginUser, signupUser, updateUser, fetchUserDetails } from './userActio
 const userSlice = createSlice({
     name: 'user',
     initialState: {
-        user: null,
+        user: JSON.parse(localStorage.getItem('token')) || null,
         loading: false,
         error: null,
     },
     reducers: {
+        setUser: (state, action) => {
+            state.user = action.payload;
+            localStorage.setItem('token', JSON.stringify(action.payload));
+        },
         logoutUser: (state) => {
             state.user = null;
             localStorage.removeItem('token');
@@ -24,7 +28,7 @@ const userSlice = createSlice({
             .addCase(loginUser.fulfilled, (state, action) => {
                 state.loading = false;
                 state.user = action.payload;
-                localStorage.setItem('token', JSON.stringify({ id: action.payload.id }));
+                localStorage.setItem('token', JSON.stringify( action.payload ));
             })
             .addCase(loginUser.rejected, (state, action) => {
                 state.loading = false;
@@ -38,7 +42,7 @@ const userSlice = createSlice({
             .addCase(signupUser.fulfilled, (state, action) => {
                 state.loading = false;
                 state.user = action.payload;
-                localStorage.setItem('token', JSON.stringify({ id: action.payload.id }));
+                localStorage.setItem('token', JSON.stringify( action.payload));
             })
             .addCase(signupUser.rejected, (state, action) => {
                 state.loading = false;
@@ -71,7 +75,7 @@ const userSlice = createSlice({
     },
 });
 
-export const { logoutUser } = userSlice.actions;
+export const { setUser, logoutUser } = userSlice.actions;
 // export { loginUser, signupUser };
 
 export default userSlice.reducer;

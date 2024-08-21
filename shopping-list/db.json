@@ -23,7 +23,7 @@
   ],
   "shoppingLists": [
     {
-      "id": 2,
+      "id": "2",
       "userId": 456,
       "name": "Bread",
       "quantity": 1,
@@ -51,7 +51,8 @@
       "notes": "@ legit black",
       "category": "Clothing",
       "userId": "3a4d",
-      "id": "530f"
+      "id": "530f",
+      "sharedWith": []
     },
     {
       "id": "71f9",
@@ -59,7 +60,44 @@
       "quantity": "1",
       "notes": "2kg",
       "category": "Groceries",
-      "userId": "3a4d"
+      "userId": "3a4d",
+      "sharedWith": []
+    },
+    {
+      "id": "9b03",
+      "name": "tv",
+      "quantity": "1",
+      "notes": "32\"",
+      "category": "Electronics",
+      "userId": "3a4d",
+      "sharedWith": []
+    },
+    {
+      "id": "70f7",
+      "name": "meat",
+      "quantity": "2",
+      "notes": "beef",
+      "category": "Groceries",
+      "userId": "3a4d",
+      "sharedWith": []
+    },
+    {
+      "id": "6e43",
+      "name": "meat",
+      "quantity": "2",
+      "notes": "beef",
+      "category": "Groceries",
+      "userId": "3a4d",
+      "sharedWith": []
+    },
+    {
+      "id": "cbf2",
+      "name": "keyboard",
+      "quantity": "1",
+      "notes": "slime",
+      "category": "Electronics",
+      "userId": "3a4d",
+      "sharedWith": []
     }
   ]
 }

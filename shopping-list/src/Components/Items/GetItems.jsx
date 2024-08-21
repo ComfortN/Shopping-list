@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Typography, List, ListItem, ListItemText, ListItemIcon, IconButton, Snackbar, TextField } from '@mui/material';
-import {Delete, Edit} from '@mui/icons-material';
+import {Delete, Edit, Share} from '@mui/icons-material';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteItem , fetchItems } from '../../Features/shoppingList/shoppingListActions';
@@ -30,15 +30,18 @@ export default function GetItems({ onEdit }) {
     useEffect(() => {
         if (user) {
             dispatch(fetchItems()); // Fetch specific user shopping lists
+            console.log('User:', user);
+            console.log('Items:', items);
         }
-    }, [user, dispatch]);
+    }, [user, dispatch, user, items]);
 
     const userItems = items.filter(item => item.userId === user.id);
 
 
     // Filter items based on the search query, sorting and filtering
     const filteredItems = userItems
-        .filter(item => item.name.toLowerCase().includes(searchQuery.toLowerCase()))
+        .filter(item => item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                (filterCategory && item.category.toLowerCase() === filterCategory.toLowerCase() ))
         .filter(item => (filterCategory ? item.category === filterCategory : true))
         .sort((a, b) => {
             if (sortCriteria === 'nameAsc') return a.name.localeCompare(b.name);
@@ -65,6 +68,22 @@ export default function GetItems({ onEdit }) {
 
     const handleEdit = (item) => {
         if (onEdit) onEdit(item);
+    };
+
+
+    const handleNativeShare = (item) => {
+        if (navigator.share) {
+            navigator.share({
+                title: item.name,
+                text: `Check out this item: ${item.name}. Quantity: ${item.quantity}. Notes: ${item.notes}.`,
+                url: window.location.href,
+            })
+            .then(() => console.log('Share was successful.'))
+            .catch((error) => console.log('Sharing failed:', error));
+        } else {
+            console.log('Web Share API is not supported in this browser.');
+            
+        }
     };
 
 
@@ -107,6 +126,10 @@ export default function GetItems({ onEdit }) {
 
                             <IconButton edge="end" aria-label="delete" onClick={() => handleDelete(item.id)}>
                                 <Delete />
+                            </IconButton>
+
+                            <IconButton edge="end" aria-label="share" onClick={() => handleNativeShare(item)}>
+                                <Share />
                             </IconButton>
                         </ListItemIcon>
                     </ListItem>
