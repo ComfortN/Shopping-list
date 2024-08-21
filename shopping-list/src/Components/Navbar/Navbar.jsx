@@ -9,6 +9,7 @@ import ProfileModal from '../Profile/ProfileModal';
 
 
 
+
 export default function Navbar() {
   const [profileModalOpen, setProfileModalOpen] = useState(false);
   const dispatch = useDispatch();

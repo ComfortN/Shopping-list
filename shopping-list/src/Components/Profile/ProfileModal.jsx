@@ -10,6 +10,7 @@ export default function ProfileModal({ open, handleClose }) {
     const dispatch = useDispatch();
     const [isEditing, setIsEditing] = useState(false);
     const [image, setImage] = useState('');
+    const [imageFile, setImageFile] = useState(null);
     const [updatedUser, setUpdatedUser] = useState({});
     const [loading, setLoading] = useState(false);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -36,6 +37,19 @@ export default function ProfileModal({ open, handleClose }) {
     const handleEditClick = () => setIsEditing(true);
 
   const handleSave = async () => {
+    setLoading(true);
+    const formData = new FormData();
+
+    formData.append('username', updatedUser.username);
+    formData.append('name', updatedUser.name);
+    formData.append('email', updatedUser.email);
+
+    if (updatedUser.password) {
+        formData.append('password', updatedUser.password);
+    }
+    if (imageFile) {
+        formData.append('image', imageFile);
+    }
     try {
       await dispatch(updateUser(updatedUser, image)); // Update user info
       setSnackbarMessage('Profile updated successfully!');
@@ -47,14 +61,25 @@ export default function ProfileModal({ open, handleClose }) {
     }
   };
 
-  const handleCloseSnackbar = () => {
-    setSnackbarOpen(false);
-  };
+    const handleCloseSnackbar = () => {
+        setSnackbarOpen(false);
+    };
 
 
-const handleImageChange = (imageURL) => {
-    setImage(imageURL);
-  };
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setImageFile(file);
+            setImage(URL.createObjectURL(file));
+        }
+    };
+
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setUpdatedUser(prevState => ({ ...prevState, [name]: value }));
+};
+
 
 
   if (loading) {
@@ -78,29 +103,29 @@ const handleImageChange = (imageURL) => {
                 <Box>
                     <TextField
                     label="Username" value={updatedUser.username || ''}
-                    onChange={(e) => setUpdatedUser({ ...updatedUser, username: e.target.value })}
+                    name="username" onChange={handleChange}
                     fullWidth margin="normal"
                     />
                     <TextField
                     label="Name" value={updatedUser.name || ''}
-                    onChange={(e) => setUpdatedUser({ ...updatedUser, name: e.target.value })}
+                    name="name" onChange={handleChange}
                     fullWidth  margin="normal"
                     />
                     <TextField
                     label="Email" type="email" value={updatedUser.email || ''}
-                    onChange={(e) => setUpdatedUser({ ...updatedUser, email: e.target.value })}
+                    name="email" onChange={handleChange}
                     fullWidth margin="normal"
                     />
                     <TextField
                     label="Password" type="password" value={updatedUser.password || ''}
-                    onChange={(e) => setUpdatedUser({ ...updatedUser, password: e.target.value })}
+                    name="password" onChange={handleChange}
                     fullWidth margin="normal"
                     />
-                    <TextField
-                        label="Image URL" variant="outlined" fullWidth
-                        margin="normal" value={image}
-                        onChange={(e) => handleImageChange(e.target.value)}
-                        required
+                    <input
+                            accept="image/*"
+                            type="file"
+                            onChange={handleImageChange}
+                            style={{ marginTop: '16px', marginBottom: '16px' }}
                         />
                 </Box>
                 ) : (

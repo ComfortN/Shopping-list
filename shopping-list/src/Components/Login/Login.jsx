@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { TextField, Button, Typography, Container, Snackbar, Link } from '@mui/material';
+import { TextField, Button, Typography, Container, Snackbar, Link, Box} from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../Features/Users/userActions';
+import BounceLoader from 'react-spinners/BounceLoader';
 
 export default function Login() {
     const [username, setUsername] = useState('');
@@ -60,9 +61,15 @@ export default function Login() {
                 value={password} variant="standard"
                 onChange={(e) => setPassword(e.target.value)}
                 />
-                <Button type="submit" variant="contained" color="primary" className='button'>
-                {status === 'loading' ? 'Logging in...' : 'Login'}
-                </Button>
+                <Box display="flex" justifyContent="center" alignItems="center" marginTop={2}>
+                    {status === 'loading' ? (
+                        <BounceLoader size={60} color={"#36D7B7"} />
+                    ) : (
+                        <Button type="submit" variant="contained" color="primary" className='button'>
+                            Login
+                        </Button>
+                    )}
+                </Box>
             </form>
 
             <Typography variant="body2" gutterBottom style={{ marginTop: '16px' }}>
