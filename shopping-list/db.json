@@ -19,6 +19,11 @@
       "id": "2050",
       "username": "zane",
       "password": "123"
+    },
+    {
+      "id": "54a0",
+      "username": "mlab",
+      "password": "phumzile"
     }
   ],
   "shoppingLists": [
@@ -98,6 +103,54 @@
       "category": "Electronics",
       "userId": "3a4d",
       "sharedWith": []
+    },
+    {
+      "id": "1b06",
+      "name": "curtains",
+      "quantity": "3",
+      "notes": "",
+      "category": "Household",
+      "userId": "3a4d"
+    },
+    {
+      "id": "405b",
+      "name": "meat",
+      "quantity": "3",
+      "notes": "beef",
+      "category": "Groceries",
+      "userId": "54a0"
+    },
+    {
+      "id": "02a3",
+      "name": "curtains",
+      "quantity": "1",
+      "notes": "",
+      "category": "Household",
+      "userId": "54a0"
+    },
+    {
+      "id": "f136",
+      "name": "bread",
+      "quantity": "1",
+      "notes": "",
+      "category": "Groceries",
+      "userId": "54a0"
+    },
+    {
+      "id": "a1c2",
+      "name": "microwave",
+      "quantity": "1",
+      "notes": "32l",
+      "category": "Electronics",
+      "userId": "54a0"
+    },
+    {
+      "id": "ef31",
+      "name": "hat",
+      "quantity": "2",
+      "notes": "binnie",
+      "category": "Clothing",
+      "userId": "54a0"
     }
   ]
 }

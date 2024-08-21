@@ -18,6 +18,19 @@ export const addItem = createAsyncThunk(
         const response = await axios.post('http://localhost:8888/shoppingLists', item);
         return response.data;
         
+    },
+    {
+        meta: {
+            offline: {
+                effect: ({ userId, item }) => ({
+                    url: 'http://localhost:8888/shoppingLists',
+                    method: 'POST',
+                    data: { ...item, userId },
+                }),
+                commit: { type: 'shoppingList/addItemCommit' },
+                rollback: { type: 'shoppingList/addItemRollback' },
+            },
+        },
     }
 );
 
@@ -29,6 +42,19 @@ export const updateItem = createAsyncThunk(
             const response = await axios.put(`http://localhost:8888/shoppingLists/${itemId}`, itemWithUserId);
             return response.data;
         
+    },
+    {
+        meta: {
+            offline: {
+                effect: ({ userId, itemId, updatedItem }) => ({
+                    url: `http://localhost:8888/shoppingLists/${itemId}`,
+                    method: 'PUT',
+                    data: { ...updatedItem, userId },
+                }),
+                commit: { type: 'shoppingList/updateItemCommit' },
+                rollback: { type: 'shoppingList/updateItemRollback' },
+            },
+        },
     }
 );
 
@@ -40,5 +66,18 @@ export const deleteItem = createAsyncThunk(
             await axios.delete(`http://localhost:8888/shoppingLists/${itemId}`);
             return itemId;
         
+    },
+    {
+        meta: {
+            offline: {
+                effect: ({ userId, itemId, updatedItem }) => ({
+                    url: `http://localhost:8888/shoppingLists/${itemId}`,
+                    method: 'PUT',
+                    data: { ...updatedItem, userId },
+                }),
+                commit: { type: 'shoppingList/updateItemCommit' },
+                rollback: { type: 'shoppingList/updateItemRollback' },
+            },
+        },
     }
 );
