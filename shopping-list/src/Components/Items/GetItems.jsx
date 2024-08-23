@@ -38,8 +38,8 @@ export default function GetItems({ onEdit }) {
     }, [user, dispatch]);
 
 
-    console.log('User:', user);
-    console.log('Items:', items);
+    // console.log('User:', user);
+    // console.log('Items:', items);
 
     const userItems = items.filter(item => item.userId === user.id);
 

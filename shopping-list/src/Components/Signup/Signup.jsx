@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 import './Signup.css'
-import { TextField, Button, Typography, Container, Snackbar, Link, Box  } from '@mui/material';
+import { TextField, Button, Typography, Container, Snackbar, Link, Box, FormControlLabel, Checkbox  } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { signupUser } from '../../Features/Users/userActions';
 import BounceLoader from 'react-spinners/BounceLoader';
+import TermsAndConditions from '../TermsAndConditions/TermsAndConditions';
 
 export default function Signup() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [acceptedTerms, setAcceptedTerms] = useState(false);
+    const [termsOpen, setTermsOpen] = useState(false);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const navigate = useNavigate();
@@ -33,6 +36,12 @@ export default function Signup() {
             return;
         }
 
+        if (!acceptedTerms) {  // Check if terms are accepted
+            setSnackbarMessage('You must accept the terms and conditions before signing up');
+            setSnackbarOpen(true);
+            return;
+        }
+
         const resultAction = await dispatch(signupUser({ username, password }));
 
         if (signupUser.fulfilled.match(resultAction)) {
@@ -48,6 +57,13 @@ export default function Signup() {
 
     const handleCloseSnackbar = () => {
         setSnackbarOpen(false);
+    };
+
+
+    const handleAcceptTerms = () => {
+        setAcceptedTerms(true);
+        setTermsOpen(false);
+        localStorage.setItem('termsAccepted', 'true');
     };
 
     return (
@@ -75,6 +91,19 @@ export default function Signup() {
                 margin="normal" value={confirmPassword} variant="standard"
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 />
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            checked={acceptedTerms}
+                            onChange={(e) => setAcceptedTerms(e.target.checked)}
+                            color="primary"
+                        />
+                    }
+                    label="I agree to the T's & C's"
+                />
+                <Button variant="outlined" color="primary" onClick={() => setTermsOpen(true)}>
+                    Read T's & C's
+                </Button>
                 <Box display="flex" justifyContent="center" alignItems="center" marginTop={2}>
                     {status === 'loading' ? (
                         <BounceLoader size={60} color={"#36D7B7"} />
@@ -98,6 +127,8 @@ export default function Signup() {
                 onClose={handleCloseSnackbar}
                 message={snackbarMessage}
             />
+            <TermsAndConditions
+                open={termsOpen} nAccept={handleAcceptTerms} onClose={() => setTermsOpen(false)} />
         </Container>
   );
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import './LandingPage.css';
-import ShoppingListImage from '../../images.jpg';
+import ShoppingListImage from '../../shoppinglist.jpeg';
 import { Container, Typography, Button, Box, AppBar, Toolbar } from '@mui/material';
 
 export default function LandingPage() {
@@ -14,7 +14,7 @@ export default function LandingPage() {
                     Manage Your Shopping Lists with Ease
                 </Typography>
                 <Typography variant="h6" paragraph>
-                    Save time and stay organized by keeping track of all your shopping lists in one place.
+                    Save time and stay organised by keeping track of all your shopping lists in one place.
                 </Typography>
                 <Button
                     variant="contained"

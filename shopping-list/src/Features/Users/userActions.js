@@ -62,7 +62,7 @@ export const updateUser = createAsyncThunk(
     'user/updateUser',
     async (userData, { rejectWithValue }) => {
         try {
-            const response = await axios.put('http://localhost:8888/users', userData); // Adjust the endpoint as necessary
+            const response = await axios.put(`http://localhost:8888/users/${userData.id}`, userData); // Adjust the endpoint as necessary
             return response.data;
         } catch (error) {
             return rejectWithValue(error.response.data);

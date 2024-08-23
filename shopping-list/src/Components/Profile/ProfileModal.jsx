@@ -17,7 +17,8 @@ export default function ProfileModal({ open, handleClose }) {
     const [snackbarMessage, setSnackbarMessage] = useState('');
 
     useEffect(() => {
-        if (open && user) {
+        let isMounted = true;
+        if (open && user && user.id && !loading) {
             setLoading(true);
             dispatch(fetchUserDetails(user.id))
                 .unwrap()
@@ -31,6 +32,9 @@ export default function ProfileModal({ open, handleClose }) {
                 })
                 .finally(() => setLoading(false));
         }
+        return () => {
+            isMounted = false; // Cleanup to avoid setting state on unmounted component
+        };
     }, [open, user, dispatch]);
 
 
@@ -53,11 +57,14 @@ export default function ProfileModal({ open, handleClose }) {
     try {
       await dispatch(updateUser(updatedUser, image)); // Update user info
       setSnackbarMessage('Profile updated successfully!');
-      setSnackbarOpen(true);
+    //   setSnackbarOpen(true);
       setIsEditing(false);
     } catch (error) {
       setSnackbarMessage('Error updating profile.');
-      setSnackbarOpen(true);
+      
+    } finally {
+        setLoading(false)
+        setSnackbarOpen(true);
     }
   };
 

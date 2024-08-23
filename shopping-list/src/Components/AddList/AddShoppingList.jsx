@@ -118,7 +118,7 @@ export default function AddShoppingList({ itemToEdit, onClose }) {
                 autoHideDuration={6000}
                 onClose={handleCloseSnackbar}
                 message={snackbarMessage}
-                severity={snackbarType}
+                
             />
         </Container>
 )
