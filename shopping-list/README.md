@@ -47,7 +47,7 @@ To run this project locally, follow these steps:
 
 ```
     npm start
-    
+```    
 
 ## Usage
 
