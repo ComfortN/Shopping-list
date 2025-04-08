@@ -36,22 +36,37 @@ To run this project locally, follow these steps:
     npm install
 ```
 
-3. Start the json-server:
-
-```
-    npm run json-server
-    
-```
-
-4. Start the app:
+3. Start the app:
 
 ```
     npm start
 ```    
+
+4. Start the json-server:
+
+```
+    cd Backend
+    npm install
+    npm start
+    
+```
 
 ## Usage
 
 1. Open http://localhost:3000 in your browser to access the application.
 2. Use the signup form to create a new account or the login form to access your existing account.
 3. Manage your shopping lists from the main dashboard, where you can add, edit, delete, and organize items.
+
+
+## Screenshots
+
+![Image](https://github.com/user-attachments/assets/345dccf0-99ad-4cf0-93dd-10b2eb0d44ae)
+
+![Image](https://github.com/user-attachments/assets/40765031-a561-459c-a2e6-3fc31eae6783)
+
+![Image](https://github.com/user-attachments/assets/bf0882a1-6c4c-484c-8069-49eab26cb934)
+
+![Image](https://github.com/user-attachments/assets/ee658dbe-1049-46ed-8b03-7feab20b3091)
+
+
 

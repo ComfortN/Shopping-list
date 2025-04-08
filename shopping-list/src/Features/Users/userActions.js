@@ -8,7 +8,7 @@ export const fetchUserDetails = createAsyncThunk(
     'user/fetchUserDetails',
     async (userId, { rejectWithValue }) => {
         try {
-            const response = await axios.get(`http://localhost:8888/users/${userId}`);
+            const response = await axios.get(`https://shopping-list-8u8c.onrender.com/users/${userId}`);
             return response.data;
         } catch (error) {
             return rejectWithValue('Error fetching user details. Please try again.');
@@ -44,7 +44,7 @@ export const signupUser = createAsyncThunk(
     'user/signupUser',
     async ({ username, password }, thunkAPI) => {
         try {
-            const response = await axios.post('http://localhost:8888/users', {
+            const response = await axios.post('https://shopping-list-8u8c.onrender.com/users', {
                 username,
                 password,
             });
@@ -79,7 +79,7 @@ export const updateUser = createAsyncThunk(
             }
 
             // Update user data including the image URL
-            const response = await axios.put(`http://localhost:8888/users/${userData.id}`, {
+            const response = await axios.put(`https://shopping-list-8u8c.onrender.com/users/${userData.id}`, {
                 ...userData,
                 image: imageUrl
             });
