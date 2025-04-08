@@ -40,33 +40,29 @@ export default function ProfileModal({ open, handleClose }) {
 
     const handleEditClick = () => setIsEditing(true);
 
-  const handleSave = async () => {
+
+const handleSave = async () => {
     setLoading(true);
-    const formData = new FormData();
-
-    formData.append('username', updatedUser.username);
-    formData.append('name', updatedUser.name);
-    formData.append('email', updatedUser.email);
-
-    if (updatedUser.password) {
-        formData.append('password', updatedUser.password);
-    }
-    if (imageFile) {
-        formData.append('image', imageFile);
-    }
+    const loaderTimer = setTimeout(() => setLoading(false), 3000);
     try {
-      await dispatch(updateUser(updatedUser, image)); // Update user info
-      setSnackbarMessage('Profile updated successfully!');
-    //   setSnackbarOpen(true);
-      setIsEditing(false);
+        await dispatch(updateUser({
+            userData: {
+                ...updatedUser,
+                image: image // Include current image URL
+            },
+            imageFile // Pass the new image file if it exists
+        })).unwrap();
+        
+        setSnackbarMessage('Profile updated successfully!');
+        setIsEditing(false);
     } catch (error) {
-      setSnackbarMessage('Error updating profile.');
-      
+        setSnackbarMessage('Error updating profile.');
     } finally {
-        setLoading(false)
+        clearTimeout(loaderTimer);
+        setLoading(false);
         setSnackbarOpen(true);
     }
-  };
+};
 
     const handleCloseSnackbar = () => {
         setSnackbarOpen(false);
@@ -89,15 +85,7 @@ export default function ProfileModal({ open, handleClose }) {
 
 
 
-  if (loading) {
-    return (
-        <Modal open={open} onClose={handleClose}>
-            <Box sx={{ width: 400, margin: 'auto', padding: 2, backgroundColor: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <CircularProgress />
-            </Box>
-        </Modal>
-    );
-}
+  
 
     return (
         <Modal open={open} onClose={handleClose}>
@@ -146,7 +134,11 @@ export default function ProfileModal({ open, handleClose }) {
                 <Box mt={2} display="flex" justifyContent="space-between">
                 {isEditing ? (
                     <>
+                     {loading ? (
+                        <CircularProgress />
+                    ) : (
                     <Button onClick={handleSave} variant="contained">Save</Button>
+                )}
                     <Button onClick={() => setIsEditing(false)}>Cancel</Button>
                     </>
                 ) : (

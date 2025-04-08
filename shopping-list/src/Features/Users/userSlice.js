@@ -4,7 +4,7 @@ import { loginUser, signupUser, updateUser, fetchUserDetails } from './userActio
 const userSlice = createSlice({
     name: 'user',
     initialState: {
-        user: JSON.parse(localStorage.getItem('token')) || null,
+        user: null,
         loading: false,
         error: null,
     },

@@ -50,7 +50,8 @@ export const signupUser = createAsyncThunk(
             });
 
             // Return user id if signup is successful
-            return { id: response.data.id, username: response.data.username };
+            // return { id: response.data.id, username: response.data.username };
+            return 'Signup successful!';
         } catch (error) {
             return thunkAPI.rejectWithValue('Error signing up. Please try again.');
         }
@@ -60,12 +61,32 @@ export const signupUser = createAsyncThunk(
 
 export const updateUser = createAsyncThunk(
     'user/updateUser',
-    async (userData, { rejectWithValue }) => {
+    async ({ userData, imageFile }, { rejectWithValue }) => {
         try {
-            const response = await axios.put(`http://localhost:8888/users/${userData.id}`, userData); // Adjust the endpoint as necessary
+            let imageUrl = userData.image;
+            
+            // Handle image upload if there's a new image file
+            if (imageFile) {
+                // In a real application, you'd upload to a proper file server
+                // For JSON Server, we'll convert to base64 to store the image data
+                const base64Image = await new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onloadend = () => resolve(reader.result);
+                    reader.readAsDataURL(imageFile);
+                });
+                
+                imageUrl = base64Image;
+            }
+
+            // Update user data including the image URL
+            const response = await axios.put(`http://localhost:8888/users/${userData.id}`, {
+                ...userData,
+                image: imageUrl
+            });
+
             return response.data;
         } catch (error) {
-            return rejectWithValue(error.response.data);
+            return rejectWithValue(error.response?.data || 'Error updating user');
         }
     }
 );

@@ -31,12 +31,12 @@
   ],
   "shoppingLists": [
     {
-      "id": "6583",
       "name": "flour",
       "quantity": "3",
       "notes": "1kg",
-      "category": "Electronics",
-      "userId": "b38a"
+      "category": "Groceries",
+      "userId": "b38a",
+      "id": "6583"
     },
     {
       "id": "3656",
@@ -45,6 +45,14 @@
       "notes": "55\"",
       "category": "Electronics",
       "userId": "8ce1"
+    },
+    {
+      "id": "f107",
+      "name": "tv",
+      "quantity": "1",
+      "notes": "32\"",
+      "category": "Electronics",
+      "userId": "b38a"
     }
   ]
 }

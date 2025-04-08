@@ -37,6 +37,10 @@
         width: 85%;
     }
 
+    h3 {
+        font-size: xx-small;
+    }
+
     h4 {
         font-size: 1.5rem;
     }

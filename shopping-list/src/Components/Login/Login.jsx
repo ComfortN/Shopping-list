@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TextField, Button, Typography, Container, Snackbar, Link, Box} from '@mui/material';
+import { TextField, Button, Typography, Container, Snackbar, Link, Box, CircularProgress} from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,7 +14,7 @@ export default function Login() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const userState = useSelector((state) => state.user);
-    const { status, error } = userState || {};
+    const [loading, setLoading] = useState(false);
 
 
     const handleLogin = async (e) => {
@@ -26,7 +26,9 @@ export default function Login() {
             setSnackbarOpen(true);
             return;
         }
-
+        setLoading(true);
+        const loaderTimer = setTimeout(() => setLoading(false), 2000);
+        try {
         const resultAction = await dispatch(loginUser({ username, password }));
 
         if (loginUser.fulfilled.match(resultAction)) {
@@ -36,6 +38,12 @@ export default function Login() {
         } else if (loginUser.rejected.match(resultAction)) {
             setSnackbarMessage(resultAction.payload || 'Error logging in. Please try again.');
             setSnackbarOpen(true);
+        }
+        } catch (error) {
+            setSnackbarMessage('An unexpected error occured.');
+        } finally {
+            clearTimeout(loaderTimer);
+            setLoading(false);
         }
     };
 
@@ -62,8 +70,8 @@ export default function Login() {
                 onChange={(e) => setPassword(e.target.value)}
                 />
                 <Box display="flex" justifyContent="center" alignItems="center" marginTop={2}>
-                    {status === 'loading' ? (
-                        <BounceLoader size={60} color={"#36D7B7"} />
+                    {loading ? (
+                        <CircularProgress />
                     ) : (
                         <Button type="submit" variant="contained" color="primary" className='button'>
                             Login

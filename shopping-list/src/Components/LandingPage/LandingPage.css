@@ -51,10 +51,10 @@ h3 {
     height: 70vh;
 }
 
-.textContainer .signUpButton {
+.textContainer  {
     background-color: #1de9b6;
-    color: yellowgreen;
-    border-radius: 350px;
+    /* color: yellowgreen; */
+    /* border-radius: 350px; */
     font-family: 'Edu VIC WA NT Beginner', cursive;
     font-size: 1rem;
     text-transform: none;
@@ -62,6 +62,8 @@ h3 {
     border: none;
     float: right;
 }
+
+
 
 .signUpButton:hover {
     background-color: #64ffda;
