@@ -27,7 +27,7 @@ To run this project locally, follow these steps:
 
 ```
     git clone https://github.com/ComfortN/shopping-list.git
-    cd shopping-list
+    cd shopping-list/shopping-list
 ```
 
 2. Install dependencies:
