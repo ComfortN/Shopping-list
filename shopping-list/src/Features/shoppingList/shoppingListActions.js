@@ -4,7 +4,7 @@ import axios from 'axios';
 
 //Fetch user items
 export const fetchItems = createAsyncThunk('shoppingList/fetchItems', async () => {
-    const response = await axios.get('http://localhost:8888/shoppingLists');
+    const response = await axios.get('https://shopping-list-8u8c.onrender.com/shoppingLists');
     return response.data;
 });
 
@@ -15,7 +15,7 @@ export const addItem = createAsyncThunk(
     'shoppingList/addItem',
     async ({userId, item}) => {
         item.userId = userId;
-        const response = await axios.post('http://localhost:8888/shoppingLists', item);
+        const response = await axios.post('https://shopping-list-8u8c.onrender.com/shoppingLists', item);
         return response.data;
         
     },
@@ -23,7 +23,7 @@ export const addItem = createAsyncThunk(
         meta: {
             offline: {
                 effect: ({ userId, item }) => ({
-                    url: 'http://localhost:8888/shoppingLists',
+                    url: 'https://shopping-list-8u8c.onrender.com/shoppingLists',
                     method: 'POST',
                     data: { ...item, userId },
                 }),
@@ -39,7 +39,7 @@ export const updateItem = createAsyncThunk(
     'shoppingList/updateItem',
     async ({ userId, itemId, updatedItem }) => {
         const itemWithUserId = { ...updatedItem, userId };
-            const response = await axios.put(`http://localhost:8888/shoppingLists/${itemId}`, itemWithUserId);
+            const response = await axios.put(`https://shopping-list-8u8c.onrender.com/shoppingLists/${itemId}`, itemWithUserId);
             return response.data;
         
     },
@@ -47,7 +47,7 @@ export const updateItem = createAsyncThunk(
         meta: {
             offline: {
                 effect: ({ userId, itemId, updatedItem }) => ({
-                    url: `http://localhost:8888/shoppingLists/${itemId}`,
+                    url: `https://shopping-list-8u8c.onrender.com/shoppingLists/${itemId}`,
                     method: 'PUT',
                     data: { ...updatedItem, userId },
                 }),
@@ -63,7 +63,7 @@ export const deleteItem = createAsyncThunk(
     'shoppingList/deleteItem',
     async (itemId) => {
         
-            await axios.delete(`http://localhost:8888/shoppingLists/${itemId}`);
+            await axios.delete(`https://shopping-list-8u8c.onrender.com/shoppingLists/${itemId}`);
             return itemId;
         
     },
@@ -71,7 +71,7 @@ export const deleteItem = createAsyncThunk(
         meta: {
             offline: {
                 effect: ({ userId, itemId, updatedItem }) => ({
-                    url: `http://localhost:8888/shoppingLists/${itemId}`,
+                    url: `https://shopping-list-8u8c.onrender.com/shoppingLists/${itemId}`,
                     method: 'PUT',
                     data: { ...updatedItem, userId },
                 }),

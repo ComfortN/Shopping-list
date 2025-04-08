@@ -22,7 +22,7 @@ export const loginUser = createAsyncThunk(
     'user/loginUser',
     async ({ username, password }, thunkAPI) => {
         try {
-            const response = await axios.get('http://localhost:8888/users');
+            const response = await axios.get('https://shopping-list-8u8c.onrender.com/users');
             const users = response.data;
 
             const user = users.find(user => user.username === username && user.password === password);
